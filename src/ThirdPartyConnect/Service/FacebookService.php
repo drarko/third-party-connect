@@ -252,7 +252,7 @@ class FacebookService implements Provider
     /**
      * @return bool|NormalizedData
      */
-    public function getData()
+    public function getUserData()
     {
         if (!$this->provider)
         {
