@@ -10,6 +10,6 @@ namespace ThirdPartyConnect\Service;
 
 interface Provider
 {
-    public function getLoginUrl($returnUrl);
+    public function getLoginUrl();
     public function getData();
 }

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andreigabreanu
- * Date: 13/12/13
- * Time: 06:23
- */
 namespace ThirdPartyConnect\Service;
 
 use ThirdPartyConnect\Config\FacebookConfig;
@@ -175,6 +169,11 @@ class FacebookService implements Provider
     private $needsExtendedToken = false;
 
     /**
+     * @var array
+     */
+    private $returnUrlData = array();
+
+    /**
      * @param FacebookConfig $config
      */
     public function __construct(FacebookConfig $config)
@@ -187,6 +186,7 @@ class FacebookService implements Provider
         $this->applicationId = $config->getPublicKey();
         $this->applicationSecret = $config->getSecretKey();
         $this->needsExtendedToken = $config->needsExtendedToken();
+        $this->returnUrlData = $config->getReturnUrlData();
 
         foreach ($config->getPermissions() as $perm)
         {
@@ -200,11 +200,19 @@ class FacebookService implements Provider
     }
 
     /**
+     * @return array
+     */
+    public function getReturnUrlData()
+    {
+        return $this->returnUrlData;
+    }
+
+    /**
      * @param string $returnUrl
      *
      * @return string
      */
-    public function getLoginUrl($returnUrl)
+    public function getLoginUrl()
     {
         if (!$this->provider)
         {
@@ -215,7 +223,7 @@ class FacebookService implements Provider
         }
 
         return $this->provider->getLoginUrl(array(
-            'redirect_uri' => $returnUrl,
+            'redirect_uri' => $this->redirectUrl,
             'scope'        => implode(',', $this->permissions),
             'display'      => 'popup'
         ));

@@ -11,20 +11,13 @@ return array(
             'permissions'    => array(
                 'email', 'user_about_me'
             ),
-            'error_url' => array(
-                'routeName' => 'users/wildcard',
+            'return_url' => array(
+                'routeName' => '',
                 'params'    => array(
-                    'controller' => 'signup',
-                    'action'     => 'index'
+                    'controller' => '',
+                    'action'     => ''
                 )
             ),
-            'success_url' => array(
-                'routeName' => 'users',
-                'params'    => array(
-                    'controller' => 'social-connect',
-                    'action'     => 'facebook'
-                )
-            )
         ),
 
         // Google settings here

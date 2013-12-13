@@ -31,12 +31,7 @@ class FacebookConfig
     /**
      * @var array
      */
-    private $urlDataForError = array();
-
-    /**
-     * @var array
-     */
-    private $urlDataForSuccess = array();
+    private $returnUrl = array();
 
     /**
      * @param array $config
@@ -49,22 +44,19 @@ class FacebookConfig
                 array_key_exists('app_id', $config['facebook']) &&
                 array_key_exists('permissions', $config['facebook']) &&
                 !empty($config['facebook']['permissions']) &&
-                array_key_exists('error_url', $config['facebook']) &&
-                !empty($config['facebook']['error_url']) &&
-                array_key_exists('success_url', $config['facebook']) &&
-                !empty($config['facebook']['success_url']))
+                array_key_exists('return_url', $config['facebook']) &&
+                !empty($config['facebook']['return_url']))
             {
                 $this->isEnabled       = true;
                 $this->extendedToken   = array_key_exists('extended_token', $config['facebook']) ? (bool)$config['facebook']['extended_token'] : false; ;
                 $this->privateKey      = $config['facebook']['app_secret'];
                 $this->publicKey       = $config['facebook']['app_id'];
                 $this->permissions     = $config['facebook']['permissions'];
-                $this->urlDataForError = $config['facebook']['error_url'];
-                $this->urlDataForSuccess = $config['facebook']['success_url'];
+                $this->returnUrl       = $config['facebook']['return_url'];
             }
             else
             {
-                throw new \Exception('Facebook config needs the app_secret, app_id, the permissions array & the url data for error/success.');
+                throw new \Exception('Facebook config needs the app_secret, app_id, the permissions array & the return url data.');
             }
         }
     }
@@ -112,16 +104,8 @@ class FacebookConfig
     /**
      * @return array
      */
-    public function getUrlDataForError()
+    public function getReturnUrlData()
     {
-        return $this->urlDataForError;
-    }
-
-    /**
-     * @return array
-     */
-    public function getUrlDataForSuccess()
-    {
-        return $this->urlDataForSuccess;
+        return $this->returnUrl;
     }
 }
