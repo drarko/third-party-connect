@@ -5,7 +5,7 @@
  * Date: 13/12/13
  * Time: 08:17
  */
-namespace ThirdPartyConnect\Controller\Factory;
+namespace ThirdPartyConnect\Service\Factory;
 
 use ThirdPartyConnect\Config\FacebookConfig;
 use ThirdPartyConnect\Service\FacebookService;
@@ -29,6 +29,6 @@ class FacebookServiceFactory implements FactoryInterface
             throw new \Exception('You must copy the third-party-connect.local.php.dist file to your config/autoload directory.');
         }
 
-        return new FacebookService(new FacebookConfig($config['third-party-connect']));
+        return new FacebookService(new FacebookConfig($config['third-party-connect']), $serviceLocator->get('request'));
     }
 }

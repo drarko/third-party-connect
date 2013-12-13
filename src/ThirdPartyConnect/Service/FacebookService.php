@@ -3,6 +3,7 @@ namespace ThirdPartyConnect\Service;
 
 use ThirdPartyConnect\Config\FacebookConfig;
 use Facebook;
+use Zend\Http\Request;
 
 class FacebookService implements Provider
 {
@@ -174,10 +175,28 @@ class FacebookService implements Provider
     private $returnUrlData = array();
 
     /**
+     * @var string
+     */
+    private $shouldDisplayInPopup = 'page';
+
+    /**
+     * @var bool
+     */
+    private $isValid = false;
+
+    /**
      * @param FacebookConfig $config
      */
-    public function __construct(FacebookConfig $config)
+    public function __construct(FacebookConfig $config, Request $request)
     {
+        $error = $request->getQuery('error');
+
+        if (!empty($error))
+        {
+            $this->isValid = false;
+            return;
+        }
+
         if (!$config->isEnabled())
         {
             throw new \Exception('Facebook is not enabled');
@@ -187,6 +206,7 @@ class FacebookService implements Provider
         $this->applicationSecret = $config->getSecretKey();
         $this->needsExtendedToken = $config->needsExtendedToken();
         $this->returnUrlData = $config->getReturnUrlData();
+        $this->shouldDisplayInPopup = $config->shouldDisplayInPopup() ? 'popup' : 'page';
 
         foreach ($config->getPermissions() as $perm)
         {
@@ -212,7 +232,7 @@ class FacebookService implements Provider
      *
      * @return string
      */
-    public function getLoginUrl()
+    public function getLoginUrl($returnUrl)
     {
         if (!$this->provider)
         {
@@ -223,9 +243,9 @@ class FacebookService implements Provider
         }
 
         return $this->provider->getLoginUrl(array(
-            'redirect_uri' => $this->redirectUrl,
+            'redirect_uri' => $returnUrl,
             'scope'        => implode(',', $this->permissions),
-            'display'      => 'popup'
+            'display'      => $this->shouldDisplayInPopup
         ));
     }
 
@@ -255,5 +275,13 @@ class FacebookService implements Provider
         }
 
         return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasErrors()
+    {
+        return !(bool) $this->isValid;
     }
 }

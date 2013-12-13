@@ -11,6 +11,7 @@ return array(
             'permissions'    => array(
                 'email', 'user_about_me'
             ),
+            'use_popup'  => true,
             'return_url' => array(
                 'routeName' => '',
                 'params'    => array(
@@ -26,7 +27,7 @@ return array(
             'client_id'     => ''
         ),
 
-        // Twitter settings here
+        // Google settings here
         'twitter' => array(
             'consumer_secret' => '',
             'consumer_key'     => ''

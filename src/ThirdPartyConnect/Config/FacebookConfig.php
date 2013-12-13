@@ -34,6 +34,11 @@ class FacebookConfig
     private $returnUrl = array();
 
     /**
+     * @var bool
+     */
+    private $usePopup = false;
+
+    /**
      * @param array $config
      */
     public function __construct(array $config)
@@ -47,12 +52,13 @@ class FacebookConfig
                 array_key_exists('return_url', $config['facebook']) &&
                 !empty($config['facebook']['return_url']))
             {
-                $this->isEnabled       = true;
-                $this->extendedToken   = array_key_exists('extended_token', $config['facebook']) ? (bool)$config['facebook']['extended_token'] : false; ;
-                $this->privateKey      = $config['facebook']['app_secret'];
-                $this->publicKey       = $config['facebook']['app_id'];
-                $this->permissions     = $config['facebook']['permissions'];
-                $this->returnUrl       = $config['facebook']['return_url'];
+                $this->isEnabled     = true;
+                $this->extendedToken = array_key_exists('extended_token', $config['facebook']) ? (bool)$config['facebook']['extended_token'] : false; ;
+                $this->privateKey    = $config['facebook']['app_secret'];
+                $this->publicKey     = $config['facebook']['app_id'];
+                $this->permissions   = $config['facebook']['permissions'];
+                $this->returnUrl     = $config['facebook']['return_url'];
+                $this->usePopup      = array_key_exists('use_popup', $config['facebook']) ? (bool)$config['facebook']['use_popup'] : false; ;
             }
             else
             {
@@ -107,5 +113,13 @@ class FacebookConfig
     public function getReturnUrlData()
     {
         return $this->returnUrl;
+    }
+
+    /**
+     * @return bool
+     */
+    public function shouldDisplayInPopup()
+    {
+        return $this->usePopup;
     }
 }
