@@ -23,6 +23,7 @@
     "require": {
         "php" : ">=5.3.3",
         "zendframework/zendframework" : "2.*",
+        "zendframework/zendservice-twitter" : "2.*",
         "facebook/php-sdk" : "3.*"
     },
     "autoload": {

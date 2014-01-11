@@ -26,7 +26,7 @@ Usage
 2. Define the permissions for facebook in the same file (you can find the definition in the class FacebookService)
 3. Define the route for the return URL.
 4. Make an "a" tag with the href like this:
-	<a href="$this->url('third-party-connect', array('controller' => 'authorize', 'action' => 'facebook'), true);">Connect with facebook</a>
+	```<a href="$this->url('third-party-connect', array('controller' => 'authorize', 'action' => 'facebook'), true);">Connect with facebook</a>```
 
 	the action can be one of the following:
 		facebook, twitter, linkedin, google
@@ -34,10 +34,10 @@ Usage
     If you want to show a popup window, set in the config file the "use_popup" to true.
 
 5. In your controller/action retrieve from the service manager one of the following keys (depending on what you did)
-	$serviceManager->get('facebookConnect')
-	$serviceManager->get('twitterConnect')
-	$serviceManager->get('googleConnect')
-	$serviceManager->get('linkedinConnect')
+	```$serviceManager->get('facebookConnect')```
+	```$serviceManager->get('twitterConnect')```
+	```$serviceManager->get('googleConnect')```
+	```$serviceManager->get('linkedinConnect')```
 
 	and then run on this object the method getUserData()
 

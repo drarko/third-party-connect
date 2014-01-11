@@ -69,6 +69,35 @@ class NormalizedData
                     $normalizedData['birthday'] = null;
                 }
                 break;
+            case self::PROVIDER_TYPE_TWITTER:
+                $normalizedData['id']          = isset($denormalizedData['id']) ? (string)$denormalizedData['id'] : null;
+                $normalizedData['full_name']   = isset($denormalizedData['name']) ? (string)$denormalizedData['name'] : null;
+
+                if (!is_null($normalizedData['full_name']))
+                {
+                    $name = explode(' ', $normalizedData['full_name']);
+                    $normalizedData['first_name']  = isset($name[0]) ? $name[0] : null;
+                    $normalizedData['last_name']   = isset($name[1]) ? $name[1] : null;
+                }
+                $normalizedData['username']    = isset($denormalizedData['screen_name']) ? (string)$denormalizedData['screen_name'] : null;
+                $normalizedData['location']    = isset($denormalizedData['location']) ? (string)$denormalizedData['location'] : null;
+                $normalizedData['bio']         = isset($denormalizedData['description']) ? (string)$denormalizedData['description'] : null;
+                $normalizedData['timezone']    = isset($denormalizedData['utc_offset']) ? $denormalizedData['utc_offset'] / 3600 : null;
+                $normalizedData['locale']      = isset($denormalizedData['lang']) ? (string)$denormalizedData['lang'] : null;
+                $normalizedData['verified']    = isset($denormalizedData['verified']) ? (string)$denormalizedData['verified'] : null;
+
+                if ($normalizedData['verified'] == 'false')
+                {
+                    $normalizedData['verified'] = false;
+                }
+                elseif ($normalizedData['verified'] == 'true')
+                {
+                    $normalizedData['verified'] = true;
+                }
+
+                $normalizedData['picture_url'] = isset($denormalizedData['profile_image_url']) ? (string)$denormalizedData['profile_image_url'] : null;
+                $normalizedData['token']       = isset($denormalizedData['token']) ? $denormalizedData['token'] : null;
+                break;
 
             default:
                 throw new \Exception('Invalid provider type');
@@ -101,37 +130,6 @@ class NormalizedData
 //                $normalizedData['picture_url'] = isset($this->_data['pictureUrl']) ? $this->_data['pictureUrl'] : null;
 //                $normalizedData['token']       = isset($this->_data['token']) ? $this->_data['token'] : null;
 //                break;
-//
-//            case self::PROVIDER_TYPE_TWITTER:
-//                $normalizedData['id']          = isset($this->_data->id) ? (string)$this->_data->id : null;
-//                $normalizedData['full_name']   = isset($this->_data->name) ? (string)$this->_data->name : null;
-//
-//                if (!is_null($normalizedData['full_name']))
-//                {
-//                    $name = explode(' ', $normalizedData['full_name']);
-//                    $normalizedData['first_name']  = isset($name[0]) ? $name[0] : null;
-//                    $normalizedData['last_name']   = isset($name[1]) ? $name[1] : null;
-//                }
-//                $normalizedData['username']    = isset($this->_data->screen_name) ? (string)$this->_data->screen_name : null;
-//                $normalizedData['location']    = isset($this->_data->location) ? (string)$this->_data->location : null;
-//                $normalizedData['bio']         = isset($this->_data->description) ? (string)$this->_data->description : null;
-//                $normalizedData['timezone']    = isset($this->_data->utc_offset) ? $this->_data->utc_offset / 3600 : null;
-//                $normalizedData['locale']      = isset($this->_data->lang) ? (string)$this->_data->lang : null;
-//                $normalizedData['verified']    = isset($this->_data->verified) ? (string)$this->_data->verified : null;
-//
-//                if ($normalizedData['verified'] == 'false')
-//                {
-//                    $normalizedData['verified'] = false;
-//                }
-//                elseif ($normalizedData['verified'] == 'true')
-//                {
-//                    $normalizedData['verified'] = true;
-//                }
-//
-//                $normalizedData['picture_url'] = isset($this->_data->profile_image_url) ? (string)$this->_data->profile_image_url : null;
-//                $normalizedData['token']       = isset($this->_data->token) ? $this->_data->token : null;
-//                break;
-
     }
 
     /**

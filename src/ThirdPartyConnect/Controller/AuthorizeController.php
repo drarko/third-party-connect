@@ -18,4 +18,18 @@ class AuthorizeController extends AbstractActionController
             )
         );
     }
+
+    public function twitterAction()
+    {
+        /* @var $twitter \ThirdPartyConnect\Service\TwitterService */
+        $twitter = $this->getServiceLocator()->get('twitterConnect');
+
+        $urlData = $twitter->getReturnUrlData();
+
+        return $this->redirect()->toUrl(
+            $twitter->getLoginUrl(
+                $this->url()->fromRoute($urlData['routeName'], $urlData['params'], array('force_canonical' => true))
+            )
+        );
+    }
 }
