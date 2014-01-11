@@ -34,10 +34,10 @@ Usage
     If you want to show a popup window, set in the config file the "use_popup" to true.
 
 5. In your controller/action retrieve from the service manager one of the following keys (depending on what you did)
-	```$serviceManager->get('facebookConnect')```
-	```$serviceManager->get('twitterConnect')```
-	```$serviceManager->get('googleConnect')```
-	```$serviceManager->get('linkedinConnect')```
+	$serviceManager->get('facebookConnect')
+	$serviceManager->get('twitterConnect')
+	$serviceManager->get('googleConnect')
+	$serviceManager->get('linkedinConnect')
 
 	and then run on this object the method getUserData()
 
