@@ -6,6 +6,7 @@ use Zend\Http\Client;
 use Zend\Http\Request;
 use ZendOAuth\Consumer;
 use \Zend\Json\Json;
+use Zend\Session\Container;
 
 class TwitterService
 //class TwitterService implements Provider
@@ -107,8 +108,8 @@ class TwitterService
         $consumer = new Consumer($config);
         $consumer->setHttpClient($consumer->getHttpClient()->setOptions($httpClientOptions));
         $token = $consumer->getRequestToken();
-
-        $_SESSION['TWITTER_REQUEST_TOKEN'] = serialize($token);
+        $tw_session = new Container('twitter');
+        $tw_session->offsetSet('request_token',serialize($token));
 
         return $consumer->getRedirectUrl();
     }
@@ -139,13 +140,16 @@ class TwitterService
 
         $consumer = new Consumer($config);
         $consumer->setHttpClient($consumer->getHttpClient()->setOptions($httpClientOptions));
-
-        if (!empty($this->getParams) && isset($_SESSION['TWITTER_REQUEST_TOKEN']))
+	
+	$tw_session = new Container('twitter');
+	
+        if (!empty($this->getParams) && ($tw_session->offsetExists('request_token')))
         {
             try
             {
-                $token = $consumer->getAccessToken($this->getParams, unserialize($_SESSION['TWITTER_REQUEST_TOKEN']));
-                unset($_SESSION['TWITTER_REQUEST_TOKEN']);
+		$tw_request_token = $tw_session->offsetGet('request_token');
+                $token = $consumer->getAccessToken($this->getParams, unserialize($tw_request_token));
+                $tw_session->offsetUnset('request_token');
 
                 $client = $token->getHttpClient($config, null, array('adapter' => new Client\Adapter\Curl()));
                 $client->setUri('https://api.twitter.com/1.1/account/verify_credentials.json');
